@@ -1,0 +1,41 @@
+## METAL Commands
+
+## Common variant meta-analysis (Stouffers): INTERVAL+METSIM
+
+# Sample size weighted meta-analysis (Stouffers)
+SCHEME SAMPLESIZE
+
+# Load METSIM
+
+MARKER rsids
+ALLELE alt ref
+EFFECT beta
+STDERR sebeta
+PVALUE pval
+SEPARATOR TAB
+WEIGHT N
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Common_var/Full_meta/Full_meta_common_METSIM.txt
+
+# Load INTERVAL
+
+MARKER rsids
+ALLELE ALT REF
+EFFECT beta
+STDERR standard_error
+PVALUE p_value
+SEPARATOR TAB
+WEIGHT N
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Common_var/Full_meta/Full_meta_common_INTERVAL.txt
+
+## Load ATBC/PLCO
+
+MARKER rsids
+ALLELE A_EFFECT A_ALT
+EFFECT Z
+PVALUE P
+SEPARATOR TAB
+WEIGHT N
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Common_var/Full_meta/Full_meta_common_PLCO_ATBC.txt
+
+OUTFILE	/home/control/data/users/william/Meta_retinol_GWAS/Meta_analysis_output/Stouffers_Full_METSIM_INTERVAL_PLCO_ATBC .tbl
+ANALYZE HETEROGENEITY

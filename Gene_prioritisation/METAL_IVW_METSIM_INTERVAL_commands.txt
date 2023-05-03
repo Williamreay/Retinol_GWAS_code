@@ -1,0 +1,35 @@
+## METAL Commands
+
+## Common variant meta-analysis (IVW): INTERVAL+METSIM
+
+# (IVW)
+SCHEME STDERR
+
+## Make custom variable to keep rsids
+
+CUSTOMVARIABLE dbSNP
+
+# Load METSIM
+
+MARKER CHR_BP_REF_ALT
+ALLELE alt ref
+EFFECT beta
+STDERR sebeta
+PVALUE pval
+SEPARATOR TAB
+LABEL dbSNP as rsids
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Common_var/INTERVAL_METSIM_meta/METSIM_harmonised_INTERVAL_METSIM_COMMON.txt
+
+# Load INTERVAL
+
+MARKER CHR_BP_REF_ALT
+ALLELE ALT REF
+EFFECT beta
+STDERR standard_error
+PVALUE p_value
+SEPARATOR TAB
+LABEL dbSNP as rsids
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Common_var/INTERVAL_METSIM_meta/INTERVAL_harmonised_INTERVAL_METSIM_COMMON.txt
+
+OUTFILE	/home/control/data/users/william/Meta_retinol_GWAS/Meta_analysis_output/IVW_METSIM_INTERVAL .tbl
+ANALYZE HETEROGENEITY

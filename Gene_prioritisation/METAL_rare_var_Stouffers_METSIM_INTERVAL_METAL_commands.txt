@@ -1,0 +1,31 @@
+## METAL Commands
+
+## Rare variant meta-analysis (Stouffers): INTERVAL+METSIM
+
+# Sample size weighted meta-analysis
+SCHEME SAMPLESIZE
+
+# Load METSIM
+
+MARKER CHR_BP_REF_ALT
+ALLELE alt ref
+EFFECT beta
+STDERR sebeta
+PVALUE pval
+WEIGHT N
+SEPARATOR TAB
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Rare_var/Rare_var_METSIM_harmonised.txt
+
+# Load INTERVAL
+
+MARKER CHR_BP_REF_ALT
+ALLELE ALT REF
+EFFECT beta
+STDERR standard_error
+PVALUE p_value
+WEIGHT n_pheno
+SEPARATOR TAB
+PROCESS /home/control/data/users/william/Meta_retinol_GWAS/Rare_var/Rare_var_INTERVAL_harmonised.txt
+
+OUTFILE	/home/control/data/users/william/Meta_retinol_GWAS/Meta_analysis_output/RARE_VAR_Stouffers_METSIM_INTERVAL .tbl
+ANALYZE HETEROGENEITY
