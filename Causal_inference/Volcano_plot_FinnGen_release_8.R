@@ -74,7 +74,7 @@ levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the nervous syst
 levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the circulatory system (I9_)"] <-"Cardiovascular Disease"
 levels(FDR_sig$category)[levels(FDR_sig$category)=="Rheuma endpoints"] <- "Rheumatological endpoints"
 levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the ear and mastoid process (H8_)"] <-"Ear disease"
-levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the respiratory system (J10_)"] <-"Respiratory Disorders"
+levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the respiratory system (J10_)"] <-"Respiratory disorders"
 levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the musculoskeletal system and connective tissue (M13_)"] <- "Musculoskeletal/Connective Tissue disease"
 levels(FDR_sig$category)[levels(FDR_sig$category)=="Psychiatric endpoints from Katri Räikkönen"] <- "Neurological and Psychiatric"
 levels(FDR_sig$category)[levels(FDR_sig$category)=="Diseases of the skin and subcutaneous tissue (L12_)"] <-"Skin/subcutaneous disease"
