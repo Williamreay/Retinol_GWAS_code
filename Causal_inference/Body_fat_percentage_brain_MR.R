@@ -36,7 +36,7 @@ Harm_brain <- harmonise_data(BF_IVs, Out_brain, action = 3)
 
 ## MR
 
-MR_brain <- mr(Harm_brain, method_list = c("mr_ivw_mre"))
+MR_brain <- mr(Harm_brain, method_list = c("mr_ivw_mre", "mr_ivw"))
 
 ## Output
 

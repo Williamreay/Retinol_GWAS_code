@@ -71,7 +71,8 @@ Out_df <- format_data(Concat,
                       pval_col = "pval",
                       effect_allele_col = "alt",
                       other_allele_col = "ref",
-                      ncase_col = "n_case", ncontrol_col = "n_control")
+                      ncase_col = "n_case", ncontrol_col = "n_control"
+
 
 ## Harmonise
 
