@@ -16,6 +16,7 @@ library(ggplot2)
 library(RColorBrewer)
 library(psych)
 library(ggpubr)
+library(readxl)
 
 ## Read in raw concatenated data
 
@@ -103,16 +104,17 @@ Tier_2_Merge_pass_het_and_Egger_test <- Tier_2_Merge_pass_het_and_Egger_test %>%
 write.table(Tier_2_Merge_pass_het_and_Egger_test, file="Processed_output/Tier_2/Passing_traits_tier_2.txt",
             sep = "\t", row.names = F, quote = F)
 
-## Plot the Tier 2 results
+## Plot the Tier 2 results - after manual curation in line with reviewer's comment
 
-Plot_input_tier_2 <- Tier_2_Merge_pass_het_and_Egger_test %>% filter(method == "Inverse variance weighted (multiplicative random effects)") 
+DF_tier_2 <- fread("Processed_output/Tier_2/Passing_traits_tier_2.txt")
+DF_tier_2 <- DF_tier_2 %>% filter(Name != "Age_hay_fever,_rhinitis_or_eczema_diagnosed")
+
+Plot_input_tier_2 <- DF_tier_2 %>% filter(method == "Inverse variance weighted (multiplicative random effects)") 
 
 Plot_input_tier_2$Plot_name <- c("IgG seropositivity (Herpesvirus 6 IE1A antigen)", "Ruminococcaceae prevalence (OTU97_105)", 
-                                 "Ruminococcaceae prevalence (OTU97_120)", "FAM177A1 protein expression",
-                                 "Right rostral anterior cingulate thickness", "Trunk fat percentage",
-                                 "Age hay fever, rhinitis or eczema diagnosed")
+                                 "Ruminococcaceae prevalence (OTU97_120)", "FAM177A1 protein expression", "Right rostral anterior cingulate thickness", "Trunk fat percentage")
 
-Plot_input_tier_2$Category <- c("Immune", "Microbiome", "Microbiome", "Protein", "Neuroimaging", "Anthropometric", "Immune")
+Plot_input_tier_2$Category <- c("Immune", "Microbiome", "Microbiome", "Protein", "Neuroimaging", "Anthropometric")
 Plot_input_tier_2$L_CI <- Plot_input_tier_2$b - (1.96*Plot_input_tier_2$se)
 Plot_input_tier_2$U_CI <- Plot_input_tier_2$b + (1.96*Plot_input_tier_2$se)
 Plot_input_tier_2$Z <- Plot_input_tier_2$b/Plot_input_tier_2$se
@@ -181,14 +183,20 @@ write.table(Tier_3_Merge_pass_het_and_Egger_test, file="Processed_output/Tier_3/
             sep = "\t", row.names = F, quote = F)
 
 ## Plot the top 10 most significant tier 3 results
+Tier_3_MRE <- fread("Processed_output/Tier_3/Passing_traits_tier_3.txt")
 
-Tier_3_MRE <- Tier_3_Merge_pass_het_and_Egger_test %>% filter(method == "Inverse variance weighted (multiplicative random effects)")
+Tier_3_MRE <- Tier_3_MRE %>% filter(method == "Inverse variance weighted (multiplicative random effects)")
+
+## Remove curated traits in line with reviewer comments
+
+Tier_3_MRE <- Tier_3_MRE %>% filter(Name != "Sequelae_of_tuberculosis") %>%
+  filter(Name != "Sitting_height_ratio") %>% filter(Name != "Rash_and_other_nonspecific_skin_eruption") %>%
+  filter(Name !="Cereal_type") %>% filter(Name != "Age_hay_fever,_rhinitis_or_eczema_diagnosed")
 
 Tier_3_MRE$Plot_name <- c("IgG seropositivity (Herpesvirus 6 IE1A antigen)", "G. Oscillibacter Abundance",
                           "Bacteroides abundance (OTU99_197)", "Ruminococcaceae prevalence (OTU97_105)", 
                           "Ruminococcaceae prevalence (OTU97_120)", "Ruminococcaceae prevalence (OTU99_121)",
-                          "Faecalibacterium prevalence (OTU99_45)", "Sequalae of tuberculosis",
-                          "Rash/non-specific skin erruption", "Sitting height ratio", "FAM177A1 protein expression",
+                          "Faecalibacterium prevalence (OTU99_45)", "FAM177A1 protein expression",
                           "PEAR-1 protein expression", "ADPGK protein expression", "rfMRI connectivity ICA25 edge 0161",
                           "rfMRI connectivity ICA100 edge 13", "Left pallidum volume", "rfMRI connectivity ICA100 edge 0306",
                           "Interm prim-Jensen syrus surface area", "Left cuneus thickness", "Right caudal anterior cingulate thickness",
@@ -196,15 +204,14 @@ Tier_3_MRE$Plot_name <- c("IgG seropositivity (Herpesvirus 6 IE1A antigen)", "G.
                           "Right pericallosal thicnkess", "Body fat percentage", "Left leg fat percentage", "Trunk fat percentage", "Dental problems (none of above)",
                           "Keratometry:3mm weak meridian (left)", "Keratometry:3mm weak meridian (right)", "Keratometry:6mm weak meridian (left)",
                           "Keratometry:6mm weak meridian (left)", "Other savoury snack intake", "Other bread intake", "Home area pop. density - hamlet/isolated dwelling",
-                          "Medication related adverse effects", "Coxarthrosis [arthrosis of hip](FG)", "Medication related adverse effects (Asthma/COPD)",
-                          "Cereal Type", "Age hay fever/rhinitis/eczema diagnosed")
+                          "Medication related adverse effects (Asthma)", "Coxarthrosis [arthrosis of hip](FG)", "Medication related adverse effects (Asthma/COPD)")
 
 Tier_3_MRE$Category <-  c("Immune", "Microbiome", "Microbiome", "Microbiome", "Microbiome", "Microbiome", "Microbiome",
-                          "Immune", "Dermatological", "Anthropometric", "Protein", "Protein", "Protein", "Neuroimaging",
+                          "Protein", "Protein", "Protein", "Neuroimaging",
                           "Neuroimaging","Neuroimaging","Neuroimaging","Neuroimaging","Neuroimaging","Neuroimaging","Neuroimaging",
                           "Neuroimaging","Neuroimaging", "Anthropometric", "Anthropometric","Anthropometric", "Dental",
                           "Opthamological","Opthamological", "Opthamological", "Opthamological", "Food intake", "Food intake",
-                          "Demographic", "Medication", "Rheumatological", "Medication", "Food intake", "Immune")
+                          "Demographic", "Drug adverse effects", "Rheumatological", "Drug adverse effects")
 
 ## Plot
 
@@ -218,7 +225,7 @@ BP_tier3 <- ggplot(Tier_3_MRE, aes(x=Z, y=Plot_name, fill=Category)) +
   xlab("MR Z score - standardised effect of retinol (IVW-MRE)") +
   ylab(" ") +
   geom_vline(xintercept = 0, lty="dashed") +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_brewer(palette = "Set3") +
   theme(legend.position = "none")
 
 ## Comparison plot
@@ -236,7 +243,7 @@ Com <- ggplot(Merge_plot_com2p, aes(x=Z.y, y=Z.x, colour=Category)) +
   geom_hline(yintercept = -1.96, lty = "dashed") +
   geom_vline(xintercept = 1.96, lty = "dashed") +
   geom_vline(xintercept = -1.96, lty = "dashed") +
-  scale_color_brewer(palette = "Paired")
+  scale_color_brewer(palette = "Set3")
 
 ggarrange(BP_tier3, Com)
 
