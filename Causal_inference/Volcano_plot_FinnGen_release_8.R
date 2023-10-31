@@ -16,8 +16,10 @@ setwd("~/Desktop/Retinol_GWAS/MR_all_cis_acting_SNPs/FinnGen_r8_MR/")
 IVW <- fread("FinnGen_r8_retinol_MR_Ncase_over_1000.txt")
 
 N3 <- fread("18_31593832_A_G_phenotype_associations.tsv")
+N3$N <- paste("Number of cases = ", N3$n_case, sep = "")
+N3$Plot_name <- paste(N3$phenostring, " (",N3$N,")", sep="")
 
-N3 <- N3 %>% select(phenocode, phenostring, category)
+N3 <- N3 %>% select(phenocode, phenostring, category, Plot_name)
 N3$outcome <- N3$phenocode
 Merge <- merge(IVW, N3, by = "outcome")
 
@@ -28,7 +30,7 @@ FDR_sig <- generate_odds_ratios(FDR_sig)
 
 FDR_plt <- FDR_sig %>% filter(FDR < 0.01)
 
-ggplot(data = FDR_plt, aes(x=phenostring, y=or,
+ggplot(data = FDR_plt, aes(x=Plot_name, y=or,
                                ymax=or_uci95, ymin=or_lci95, 
                                colour=category)) +
   coord_flip() +

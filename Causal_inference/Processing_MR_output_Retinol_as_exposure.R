@@ -170,7 +170,7 @@ Tier_2_com <- ggplot(Merge_plot_comp, aes(x=Z.y, y=Z.x, colour=Category)) +
   scale_colour_manual(values = c("#A6CEE3", "#E31A1C", "#FF7F00", 
                                "#CAB2D6", "#FFFF99"))
 
-ggarrange(BP1, Tier_2_com)
+T1 <- ggarrange(BP1, Tier_2_com)
 
 ## Repeat for Tier 3 traits
 
@@ -245,5 +245,6 @@ Com <- ggplot(Merge_plot_com2p, aes(x=Z.y, y=Z.x, colour=Category)) +
   geom_vline(xintercept = -1.96, lty = "dashed") +
   scale_color_brewer(palette = "Set3")
 
-ggarrange(BP_tier3, Com)
+T2 <- ggarrange(BP_tier3, Com)
 
+ggarrange(T1, T2, nrow = 2)

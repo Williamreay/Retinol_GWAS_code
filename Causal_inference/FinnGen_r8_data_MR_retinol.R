@@ -71,7 +71,7 @@ Out_df <- format_data(Concat,
                       pval_col = "pval",
                       effect_allele_col = "alt",
                       other_allele_col = "ref",
-                      ncase_col = "n_case", ncontrol_col = "n_control"
+                      ncase_col = "n_case", ncontrol_col = "n_control")
 
 
 ## Harmonise
@@ -154,7 +154,14 @@ Tier_3_Merge_pass_het_and_Egger_test <- Tier_3_Merge_pass_het_and_Egger_test %>%
 write.table(Tier_3_Merge_pass_het_and_Egger_test, file="FinnGen_Passing_traits_tier_3.txt",
            sep = "\t", row.names = F, quote = F)
 
-Tier_3_plot <- merge(Tier_3_Merge_pass_het_and_Egger_test, N1, by = "outcome")
+N3 <- fread("18_31593832_A_G_phenotype_associations.tsv")
+N3$N <- paste("Number of cases = ", N3$n_case, sep = "")
+N3$Plot_name <- paste(N3$phenostring, " (",N3$N,")", sep="")
+
+N3 <- N3 %>% select(phenocode, phenostring, category, Plot_name)
+N3$outcome <- N3$phenocode
+
+Tier_3_plot <- merge(Tier_3_Merge_pass_het_and_Egger_test, N3, by = "outcome")
 
 ## Make forest plot
 
@@ -169,7 +176,7 @@ IVW_MRE <- Tier_3_plot %>% filter(METHOD == "IVW-MRE")
 
 Other <- Tier_3_plot %>% filter(METHOD != "IVW-MRE")
 
-FP_1 <- ggplot(data = IVW_MRE, aes(x=phenostring, y=or,
+FP_1 <- ggplot(data = IVW_MRE, aes(x=Plot_name, y=or,
                                        ymax=or_uci95, ymin=or_lci95, 
                                        colour=phenostring)) +
   facet_wrap(~METHOD, nrow = 3, ncol = 2) + 
@@ -183,7 +190,7 @@ FP_1 <- ggplot(data = IVW_MRE, aes(x=phenostring, y=or,
   scale_color_brewer(palette = "Paired") +
   theme(legend.position = "none")
 
-FP_2 <- ggplot(data = Other, aes(x=phenostring, y=or,
+FP_2 <- ggplot(data = Other, aes(x=Plot_name, y=or,
                            ymax=or_uci95, ymin=or_lci95, 
                            colour=phenostring)) +
   facet_wrap(~METHOD, nrow = 3, ncol = 2) + 
